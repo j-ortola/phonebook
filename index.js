@@ -13,10 +13,7 @@ app.use(cors())
 app.use(express.static('build'))
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(result => {
-    response.json(result)
-    mongoose.connection.close()
-  })
+  Person.find({}).then(result => response.json(result))
 })
 
 app.get('/api/persons/:id', (request, response) => {
