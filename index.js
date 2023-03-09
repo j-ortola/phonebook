@@ -1,7 +1,9 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const app = express()
+const Person = require('./models/person.js')
 
 let persons = [
   { 
@@ -34,7 +36,10 @@ app.use(cors())
 app.use(express.static('build'))
 
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(result => {
+    response.json(result)
+    mongoose.connection.close()
+  })
 })
 
 app.get('/api/persons/:id', (request, response) => {
