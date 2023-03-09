@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" "
+    "lint": "eslint ."
   },
   "keywords": [
     "phonebook"
@@ -23,6 +23,8 @@
   "devDependencies": {
     "eslint": "^8.35.0",
     "eslint-config-standard": "^17.0.0",
+    "eslint-config": "^0.3.0",
+    "eslint-config-react": "^1.1.7",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-n": "^15.6.1",
     "eslint-plugin-promise": "^6.1.1",

@@ -21,6 +21,14 @@
         "indent": [ "error", 2 ],
         "linebreak-style": [ "error", "unix" ],
         "quotes": [ "error", "single" ],
-        "semi": [ "error", "never" ]
+        "semi": [ "error", "never" ],
+        "no-trailing-spaces": "error",
+        "eqeqeq": "error",
+        "object-curly-spacing": [ "error", "always" ],
+        "arrow-spacing": [ "error" , { "before": true, "after": true } ],
+        "no-console": 0
+    },
+    "settings": {
+        "react": { "version": "detect" }
     }
 }
