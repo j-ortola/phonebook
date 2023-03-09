@@ -13,28 +13,31 @@ app.use(cors())
 app.use(express.static('build'))
 
 app.get('/api/persons', (request, response) => {
-  Person.find({}).then(result => response.json(result))
+  Person.find({})
+    .then(result => response.json(result))
+    .catch(error => response.status(501).end())
 })
 
 app.get('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  const person = persons.find(x => x.id === id)
-  
-  if (person)
-    response.json(person)
-  else
-    response.status(404).end()
+  Person.find({ id })
+    .then(result => response.json(result))
+    .catch(error => response.status(404).end())
 })
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = Number(request.params.id)
-  persons = persons.filter(x => x.id !== id)
+  Person.deleteOne({ id })
+    .then(result => response.status(204).end())
+    .catch(error => response.status(404).end())
   
   response.status(204).end()
 })
 
 app.get('/info', (request, response) => {
-  response.send(`<p>Phonebook has info for ${persons.length} people</p><p>${new Date()}</p>`)
+  Person.find({})
+    .then(result => response.send(`<p>Phonebook has info for ${result.length} people</p><p>${new Date()}</p>`))
+    .catch(error => response.status(501).end())
 })
 
 app.post('/api/persons', (request, response) => {
@@ -48,12 +51,13 @@ app.post('/api/persons', (request, response) => {
   
   if (!request.body.name || !request.body.number)
     return response.status(400).json({error: 'content missing'})
-  else if (persons.find(x => x.name.toLowerCase() === request.body.name.toLowerCase()))
-    return response.status(400).json({error: 'name must be unique'})
+  //else if (persons.find(x => x.name.toLowerCase() === request.body.name.toLowerCase()))
+  //  return response.status(400).json({error: 'name must be unique'})
   else {
-    let person = { id: nextId(), name: request.body.name, number: request.body.number }
-    persons = persons.concat(person)
-    response.json(person)
+    const person = new Person({ id: nextId(), name: request.body.name, number: request.body.number })
+    person.save()
+      .then(result => response.json(result))
+      .catch(error => response.status(500).end())
   } 
 })
 
